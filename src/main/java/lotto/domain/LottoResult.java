@@ -1,12 +1,9 @@
 package lotto.domain;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LottoResult {
-    private Map<LottoState, Integer> matchCounter = new HashMap<LottoState, Integer>() {{
+    private Map<LottoState, Integer> matchCounter = new LinkedHashMap<LottoState, Integer>() {{
         put(LottoState.FORTH, 0);
         put(LottoState.THIRD, 0);
         put(LottoState.SECOND, 0);
@@ -15,10 +12,10 @@ public class LottoResult {
     private int investMoney;
 
 
-    public LottoResult(List<Lotto> winners, int investMoney) {
-        for (Lotto winner : winners) {
-            matchCounter.put(winner.getLottoState()
-                    , matchCounter.get(winner.getLottoState()) + 1);
+    public LottoResult(List<LottoState> winners, int investMoney) {
+        for (LottoState winner : winners) {
+            matchCounter.put(winner
+                    , matchCounter.get(winner) + 1);
         }
         this.investMoney = investMoney;
     }
@@ -44,7 +41,7 @@ public class LottoResult {
         LottoState key = null;
         while (itr.hasNext()) {
             key = itr.next();
-            result.append(key + "개 일치 (" + key.getReward() + ")- " + matchCounter.get(key) + "개\n");
+            result.append(key.getMatchCount() + "개 일치 (" + key.getReward() + ")- " + matchCounter.get(key) + "개\n");
         }
         result.append("총 수익률은 " + String.format("%.1f", getProfit()) + "%입니다.");
         return result.toString();

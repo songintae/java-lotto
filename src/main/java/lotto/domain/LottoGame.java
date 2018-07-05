@@ -2,6 +2,7 @@ package lotto.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LottoGame {
     private static final int LOTTO_COST = 1000;
@@ -35,26 +36,14 @@ public class LottoGame {
         this.winLotto = winLotto;
     }
 
-    List<Lotto> getWinners(List<Lotto> lottos) {
-        List<Lotto> winners = new ArrayList<>();
-        for (Lotto lotto : lottos) {
-            lotto.matchState(winLotto);
-            if (lotto.isWinner())
-                winners.add(lotto);
-        }
-
-//        List<Lotto> winners = lottos.stream()
-//                .forEach(lotto -> lotto.setLottoState(winLotto))
-//                .filter(lotto -> lotto.isWinner())
-//                .collect(Collectors.toList());
-
-        return winners;
+    List<LottoState> getWinners(List<Lotto> lottos) {
+        return lottos.stream().filter(lotto -> LottoState.isWinner(lotto.getMatchCount(winLotto)))
+                .map(lotto -> LottoState.valueOf(lotto.getMatchCount(winLotto)))
+                .collect(Collectors.toList());
     }
-
 
     public LottoResult getLottoResult(List<Lotto> lottos) {
         return new LottoResult(getWinners(lottos), (lottos.size() * LOTTO_COST));
     }
-
 
 }

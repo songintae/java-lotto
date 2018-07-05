@@ -1,55 +1,52 @@
 package lotto.domain;
 
+import javax.swing.text.html.HTMLDocument;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Lotto {
     public static final int A_LOTTO_COUNT = 6;
 
-    private Set <Integer> numbers;
-    private LottoState state;
+    private Set <LottoNo> numbers;
 
-    public Lotto(Set<Integer> numbers) {
+    public Lotto(Set<LottoNo> numbers) {
         this.numbers = numbers;
         if (!isValidLottoNumbers())
             throw new IllegalArgumentException("로또 번호가 잘못됐습니다.");
 
     }
 
-    public Set<Integer> getNumbers() {
+    public Set<LottoNo> getNumbers() {
         return numbers;
     }
 
-    public void matchState(Lotto winLotto) {
-        int result = 0;
-        result = winLotto.getNumbers().stream()
+    public int getMatchCount(Lotto winLotto) {
+
+        return winLotto.getNumbers().stream()
                 .filter(number -> numbers.contains(number))
                 .collect(Collectors.toList()).size();
-        state = LottoState.valueOf(result);
     }
 
-    public boolean isWinner(){
-        return state.isWinner();
+    public boolean isWinner(Lotto winLotto){
+        return LottoState.isWinner(getMatchCount(winLotto));
     }
 
-    public LottoState getLottoState() {
-        return state;
-    }
 
     public String buildLottoString() {
         StringBuilder result = new StringBuilder();
         result.append("[");
-        for (Integer number : numbers) {
-            result.append(number + ", ");
+        Iterator<LottoNo> itr = numbers.iterator();
+        result.append(itr.next().getNumber());
+        while(itr.hasNext()){
+            result.append(", " + itr.next().getNumber());
         }
-        return result.substring(0, result.length() -2) + "]";
+        result.append("]");
+        return result.toString();
     }
 
     boolean isValidLottoNumbers() {
-
         if(!isValidSize())
-            return false;
-        if(!isValidBoundary())
             return false;
 
         return true;
@@ -61,14 +58,6 @@ public class Lotto {
 
         if (Lotto.A_LOTTO_COUNT != numbers.size())
             return false;
-        return true;
-    }
-
-    private boolean isValidBoundary() {
-        for (int number : numbers) {
-            if (number < 1 || number > 45)
-                return false;
-        }
         return true;
     }
 

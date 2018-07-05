@@ -1,5 +1,7 @@
 package lotto.view;
 
+import lotto.domain.LottoNo;
+
 import java.util.*;
 
 public class InputView {
@@ -11,7 +13,7 @@ public class InputView {
         return Integer.parseInt(scanner.nextLine());
     }
 
-    public Set<Integer> inputWinNumbers() {
+    public Set<LottoNo> inputWinNumbers() {
         System.out.println("\n 지난 주 당첨 번호를 입력해 주세요.");
         return parse(scanner.nextLine().split(", "));
     }
@@ -23,10 +25,10 @@ public class InputView {
         return input.split(", ");
     }
 
-    public Set<Integer> parse(String[] values) {
-        Set<Integer> result = new HashSet<>();
+    public Set<LottoNo> parse(String[] values) {
+        Set<LottoNo> result = new HashSet<>();
         for (String value : values) {
-            result.add(parseInteger(value));
+            result.add(new LottoNo(parseInteger(value)));
         }
         return result;
     }

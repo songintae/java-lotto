@@ -19,10 +19,13 @@ public enum LottoState {
 
 
     public static LottoState valueOf(int matchCount) {
-
         return Arrays.stream(LottoState.values()).filter(lottoState -> lottoState.getMatchCount() == matchCount)
                 .findAny()
                 .orElse(FAIL);
+    }
+
+    public static boolean isWinner(int getMatchCount) {
+        return getMatchCount >= LottoState.FORTH.getMatchCount();
     }
 
     public int getMatchCount() {
@@ -33,7 +36,4 @@ public enum LottoState {
         return this.reward;
     }
 
-    public boolean isWinner(){
-        return getMatchCount() >= LottoState.FORTH.getMatchCount();
-    }
 }

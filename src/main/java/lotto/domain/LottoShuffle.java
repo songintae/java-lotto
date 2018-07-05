@@ -14,9 +14,9 @@ public class LottoShuffle {
 
     public Lotto getLotto() {
         Collections.shuffle(numberPool);
-        Set<Integer> result = new HashSet<>();
+        Set<LottoNo> result = new HashSet<>();
         for (int i = 0; i < Lotto.A_LOTTO_COUNT; i++) {
-            result.add(numberPool.get(i));
+            result.add(new LottoNo(numberPool.get(i)));
         }
         return new Lotto(result);
     }

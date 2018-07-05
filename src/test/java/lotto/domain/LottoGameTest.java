@@ -18,9 +18,39 @@ public class LottoGameTest {
 
     private LottoGame game;
 
+    Lotto lotto1 = null;
+    Lotto lotto2 = null;
+    Lotto lotto3 = null;
+
     @Before
     public void setup() {
         game = new LottoGame();
+        lotto1 = new Lotto(Sets.newHashSet(Arrays.asList(
+                new LottoNo(1),
+                new LottoNo(2),
+                new LottoNo(3),
+                new LottoNo(4),
+                new LottoNo(5),
+                new LottoNo(6)
+        )));
+
+        lotto2 = new Lotto(Sets.newHashSet(Arrays.asList(
+                new LottoNo(1),
+                new LottoNo(2),
+                new LottoNo(3),
+                new LottoNo(4),
+                new LottoNo(5),
+                new LottoNo(7)
+        )));
+
+        lotto3 = new Lotto(Sets.newHashSet(Arrays.asList(
+                new LottoNo(1),
+                new LottoNo(9),
+                new LottoNo(8),
+                new LottoNo(7),
+                new LottoNo(11),
+                new LottoNo(2)
+        )));
     }
 
     @Test
@@ -46,13 +76,13 @@ public class LottoGameTest {
     @Test
     public void getWinnersTest() {
         List<Lotto> testCase = new ArrayList<>(Arrays.asList(
-                new Lotto(Sets.newHashSet(Arrays.asList(1, 2, 3, 4, 5, 6))),
-                new Lotto(Sets.newHashSet(Arrays.asList(1, 2, 3, 4, 5, 7))),
-                new Lotto(Sets.newHashSet(Arrays.asList(1, 9, 8, 7, 11, 12)))
+                lotto1,
+                lotto2,
+                lotto3
         ));
 
-        game.setWinLotto(new Lotto(Sets.newHashSet(Arrays.asList(1, 2, 3, 4, 5, 6))));
-        List<Lotto> winners = game.getWinners(testCase);
+        game.setWinLotto(lotto1);
+        List<LottoState> winners = game.getWinners(testCase);
         assertEquals(2, winners.size());
     }
 }
